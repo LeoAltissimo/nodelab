@@ -1,27 +1,55 @@
+var debug = require('debug')('livro_nodejs:controller');
+
 class StormtrooperController {
-    constructor() {
-        
+    constructor(stormtrooperModel) {
+        this.model = stormtrooperModel;
     }
 
     getAll(request, response, next) {
-        response.send('Get all stormtroopers');
-    }
+        this.model.find({}, (err, data) => {
+            console.log("AAAAAAAAAAAAA", err, data);
+            if (err) return next(err);
+            
+            response.json(data);
+        });
+    };
 
     getById(request, response, next) {
-        response.send('Get a expecific stormtrooper');
+        var id = request.params._id;
+        this.model.findOne(id, (err, data) => {
+            if (err) return next(err);
+            
+            response.json(data);
+        });
     }
 
     create(request, response, next) {
-        response.send('Add a new StormTrooper');
+        var body = request.body;
+        this.model.create(body, (err, data) => {
+            if (err) return next(err);
+            
+            response.json(data);
+        });
     }
 
     update(request, response, next) {
-        response.send('Update a stormTrooper');
+        var id = request.params._id;
+        var body = request.body;
+        this.model.update(id, body, (err, data) => {
+            if (err) return next(err);
+            
+            response.json(data);
+        });
     }
     
     remove(request, response, next) {
-        response.send('Remove a StormTrooper');
+        var id = request.params._id;
+        this.model.remove(id, body, (err, data) => {
+            if (err) return next(err);
+            
+            response.json(data);
+        });
     }
 }
 
-module.exports = new StormtrooperController();
+module.exports = (stormtrooperModel) => new StormtrooperController(stormtrooperModel);
