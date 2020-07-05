@@ -7,7 +7,6 @@ class StormtrooperController {
 
     getAll(request, response, next) {
         this.model.find({}, (err, data) => {
-            console.log("AAAAAAAAAAAAA", err, data);
             if (err) return next(err);
             
             response.json(data);
